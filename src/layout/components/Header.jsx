@@ -64,7 +64,7 @@ function Avatar() {
     <Dropdown menu={{ items }}>
       <Button type="text" className=" h-auto flex items-center gap-2">
         <AntdAvatar src={AvatarDefaultImg} />
-        demo
+        子非鱼
       </Button>
     </Dropdown>
   );

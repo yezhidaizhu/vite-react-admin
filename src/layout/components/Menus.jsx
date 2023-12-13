@@ -1,7 +1,8 @@
+import { navigate } from "@/routers";
 import {
+  ExperimentOutlined,
+  SettingOutlined,
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -14,18 +15,19 @@ export default function Menus() {
       items={[
         {
           key: "1",
-          icon: <UserOutlined />,
-          label: "nav 1",
+          icon: <ExperimentOutlined />,
+          label: "CURD",
+          onClick() {
+            navigate("/home");
+          },
         },
         {
           key: "2",
-          icon: <VideoCameraOutlined />,
-          label: "nav 2",
-        },
-        {
-          key: "3",
-          icon: <UploadOutlined />,
-          label: "nav 3",
+          icon: <ExperimentOutlined />,
+          label: "demo",
+          onClick() {
+            navigate("/demo");
+          },
         },
       ]}
     />

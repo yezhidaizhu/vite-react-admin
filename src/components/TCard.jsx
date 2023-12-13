@@ -2,6 +2,7 @@ import { Spin } from "antd";
 
 export default function TCard({
   children,
+  rootClassName = "",
   className = "",
   loading = false,
 
@@ -9,7 +10,7 @@ export default function TCard({
   actions,
 }) {
   return (
-    <div className=" bg-white p-4">
+    <div className={`bg-white p-4 ${rootClassName}`}>
       <div className=" flex justify-between">
         <div className=" text-lg">{title}</div>
         <div>{actions}</div>

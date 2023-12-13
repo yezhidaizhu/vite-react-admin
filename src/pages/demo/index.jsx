@@ -24,7 +24,6 @@ export default function Index() {
       xx: 4,
     },
   ];
-  api();
   return (
     <Content>
       <ServiceTable columns={cols} dataSource={dataSource} />

@@ -4,3 +4,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/** 滚动条 **/
+div::-webkit-scrollbar,ul::-webkit-scrollbar {
+  width: 8px ;
+}
+
+div::-webkit-scrollbar-thumb,ul::-webkit-scrollbar-thumb {
+  background: #ccc ;
+  border-radius: 5px ; 
+}
+
+div::-webkit-scrollbar-thumb:hover,ul::-webkit-scrollbar-thumb:hover {
+  /* 鼠标移入滑块 */
+  background: #aaa ; 
+}

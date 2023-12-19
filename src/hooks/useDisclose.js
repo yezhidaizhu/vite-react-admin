@@ -6,5 +6,13 @@ export default function useDisclose(defaultStatus = false) {
   const onClose = () => setopen(false);
   const onOpen = () => setopen(true);
 
-  return { open, onOpen, onClose };
+  /**
+   * 
+   * @param {*} status 仅 true 或 false 才有效设置
+   */
+  const toggle = (status) => {
+    setopen(status === false || status === true ? status : !open);
+  }
+
+  return { open, onOpen, onClose, toggle };
 }

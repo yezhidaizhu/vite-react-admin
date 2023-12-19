@@ -3,10 +3,10 @@ import copy from "copy-to-clipboard";
 import { javascript } from "@codemirror/lang-javascript";
 import { CopyOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
-import { useMemo } from "react";
+import { fmColsStrToCodeView } from "../utils";
 
 export default function CodeView({ value = [] }) {
-  const valueStr = fmStr(value);
+  const valueStr = fmColsStrToCodeView(value);
   return (
     <div className="h-full w-[360px] relative">
       <ReactCodeMirror
@@ -35,26 +35,3 @@ export default function CodeView({ value = [] }) {
     </div>
   );
 }
-
-const fmStr = (valueObj) => {
-  let str = stringify(valueObj);
-  const fn = (val, rd) => {
-    return val;
-  };
-  str = str.replaceAll(/\"\(val, rd\)[^"]+/g, "xxx");
-  return str;
-};
-
-const stringify = (obj) => {
-  return JSON.stringify(
-    obj,
-    (k, v) => {
-      if (typeof v === "function") {
-        return `${v}`;
-      } else {
-        return v;
-      }
-    },
-    2
-  );
-};

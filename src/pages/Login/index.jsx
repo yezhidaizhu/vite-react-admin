@@ -9,7 +9,7 @@ export default () => {
   };
 
   return (
-    <Form className=" w-[400px] m-auto mt-[20vh]">
+    <Form className=" w-[400px] m-auto pt-[20vh]">
       <Form.Item>
         <Input size="large" prefix={<UserOutlined />} placeholder="账户" />
       </Form.Item>

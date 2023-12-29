@@ -1,32 +1,28 @@
-import Content from "@/components/Content";
-import ServiceTable from "@/components/ServiceTable";
-import api from "@/utils/request";
+import Page from "@/components/Page";
+import { navigate } from "@/routers";
+import { Button } from "antd";
 
 export default function Index() {
-  const cols = [
+  const bts = [
     {
-      title: "A",
-      dataIndex: "id",
+      children: "前往无权限页",
+      onClick: () => navigate("/nopower"),
     },
     {
-      title: "B",
-      dataIndex: "xx",
+      children: "前往详情",
+      onClick: () => navigate("/demo/detail"),
     },
   ];
 
-  const dataSource = [
-    {
-      id: "0",
-      xx: 1,
-    },
-    {
-      id: "2",
-      xx: 4,
-    },
-  ];
   return (
-    <Content>
-      <ServiceTable columns={cols} dataSource={dataSource} />
-    </Content>
+    <Page>
+      <div className=" flex flex-col gap-2">
+        {bts.map((item, index) => (
+          <div key={index}>
+            <Button {...item} />
+          </div>
+        ))}
+      </div>
+    </Page>
   );
 }

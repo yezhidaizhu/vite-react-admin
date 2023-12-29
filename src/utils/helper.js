@@ -1,4 +1,8 @@
 
+/**
+ * 判断是否为开发环境
+ */
+export const isDev = import.meta.env.DEV;
 
 export function sleep(timeout = 3000) {
   return new Promise(resolve => setTimeout(resolve, timeout))

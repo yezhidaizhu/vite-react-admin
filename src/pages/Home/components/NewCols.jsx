@@ -1,40 +1,35 @@
-import { Input } from "antd";
-import { Button, Form, Table } from "antd";
-import { useForm } from "antd/es/form/Form";
-import { useMemo, useState } from "react";
-import { ProTable } from "@ant-design/pro-components";
 import { arrayMove } from "@dnd-kit/sortable";
+import copy from "copy-to-clipboard";
+import { useMemo, useState } from "react";
+import { opts } from "@/components/ServiceTable";
 import TCard from "@/components/TCard";
-
+import useDisclose from "@/hooks/useDisclose";
 import {
   CopyOutlined,
   EyeOutlined,
-  MoreOutlined,
   PlusCircleFilled,
   RedoOutlined,
 } from "@ant-design/icons";
+import { ProTable } from "@ant-design/pro-components";
+import { Input } from "antd";
+import { Button, Form, Table } from "antd";
 import { Modal } from "antd";
 import { Switch } from "antd";
-
-import useDisclose from "@/hooks/useDisclose";
-import { tableOpts } from "@/components/ServiceTable";
 import { ConfigProvider } from "antd";
-import copy from "copy-to-clipboard";
 import { message } from "antd";
-import { Dropdown } from "antd";
 import { Select } from "antd";
-import { valueTypeOpts } from "../utils/types";
-import CodeView from "./CodeView";
-import SortRow, { TableDndCtx } from "./SortRow";
-import { ColsStatis, FCCenter, ReverseSwitch } from "./widget";
-import NewColsActions from "./NewColsActions";
-
+import { useForm } from "antd/es/form/Form";
 import {
   fmColsStrToCodeView,
   formatColsToProTable,
   genRows,
   newRow,
 } from "../utils";
+import { valueTypeOpts } from "../utils/types";
+import CodeView from "./CodeView";
+import NewColsActions from "./NewColsActions";
+import SortRow, { TableDndCtx } from "./SortRow";
+import { ColsStatis, FCCenter, ReverseSwitch } from "./widget";
 
 const { Item, useWatch } = Form;
 
@@ -177,7 +172,7 @@ export default function NewCols() {
       title: "操作",
       dataIndex: "opts",
       render(_, rd, index) {
-        return tableOpts([
+        return opts([
           {
             label: "删除",
             danger: true,

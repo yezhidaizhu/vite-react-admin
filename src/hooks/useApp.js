@@ -1,6 +1,12 @@
-import { appAtom } from "@/stores/app";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
+
+import { menusRoutes } from "@/routers/routes";
+import { appAtom } from "@/stores/app";
+import { filterRoutes, handleRoutesEachRoute } from "@/utils/routeUtils";
+
+import useAuth from "./useAuth";
 
 export default function useApp() {
   const appState = useRecoilValue(appAtom);
@@ -8,15 +14,63 @@ export default function useApp() {
   return appState;
 }
 
-
-// 菜单控制
+/**
+ * 菜单折叠控制
+ */
 export function useSiderBar() {
   const [appState, setAppState] = useRecoilState(appAtom);
 
   const toggleSider = (open) => {
     const collapsed = open === undefined ? !appState?.collapsed : !!open;
-    setAppState((v) => ({ ...v, collapsed }))
+    setAppState((v) => ({ ...v, collapsed }));
   };
 
-  return { collapsed: appState?.collapsed, toggleSider }
+  return { collapsed: appState?.collapsed, toggleSider };
+}
+
+/**
+ * 左侧菜单
+ * created 是否根据权限与路由生成菜单，避免别的地方引用的时候再次生成
+ */
+export function useMenus({ created = false } = {}) {
+  const [appState, setAppState] = useRecoilState(appAtom);
+  const { hasPermissions } = useAuth();
+
+  /**
+   * 根据权限与路由设置菜单
+   */
+  useEffect(() => {
+    if (!created) return;
+
+    // 过滤有效路由
+    const enableRoutes = filterRoutes(menusRoutes, (route) => {
+      const hasPower = route?.code ? hasPermissions(route?.code) : true;
+      return hasPower && !route?.hideInMenu;
+    });
+
+    // 格式化菜单
+    const menus = handleRoutesEachRoute(enableRoutes, (menu) => {
+      return {
+        ...menu,
+        key: menu?.path,
+        label: menu?.title,
+        children: menu?.children?.length ? menu?.children : undefined,
+      };
+    });
+
+    setAppState((v) => ({ ...v, menus }));
+  }, [created, hasPermissions, setAppState]);
+
+  return { menus: appState.menus };
+}
+
+
+/**
+ * 面包屑 TODO
+ */
+export function useBreadCrumb() {
+  const [appState, setAppState] = useRecoilState(appAtom);
+
+  // 面包屑生成 
+  return { breadCrumbs: appState.breadCrumbs };
 }

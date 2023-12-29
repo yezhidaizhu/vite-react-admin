@@ -15,7 +15,7 @@ export function newRow() {
 // 格式化ProTable的数据，selectedIndexs 有效的下标
 export function formatColsToProTable(colsWatchValue = [], selectedIndexs = []) {
   const enableCols = colsWatchValue.filter((_, index) =>
-    selectedIndexs?.includes(index)
+    selectedIndexs?.includes(index),
   );
 
   return enableCols?.map((item, index) => {
@@ -50,7 +50,7 @@ export const fmColsStrToCodeView = (valueObj) => {
           return v;
         }
       },
-      2
+      2,
     );
   }
 };

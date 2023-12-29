@@ -1,11 +1,12 @@
+import { javascript } from "@codemirror/lang-javascript";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import copy from "copy-to-clipboard";
-import { javascript } from "@codemirror/lang-javascript";
 import { CopyOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
+
 import { fmColsStrToCodeView } from "../utils";
 
-export default function CodeView({ value = [] }) {
+export default function CodeView({ value = [] }) { 
   const valueStr = fmColsStrToCodeView(value);
   return (
     <div className="h-full w-[360px] relative">

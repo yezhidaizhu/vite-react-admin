@@ -1,35 +1,19 @@
-import DefaultLayout from "@/layout";
-import { createBrowserRouter } from "react-router-dom";
-import { home } from "./module/home";
-import Login from "@/pages/Login";
-import { Navigate } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
+import { handleRoutesEachRoute, pickCusAttrOnRoute } from "@/utils/routeUtils";
+import routes from "./routes";
 
-const routes = [
-  {
-    path: "/",
-    children: [
-      {
-        path: "/",
-        element: <Navigate to="/home" />,
-      },
-      {
-        element: <DefaultLayout />,
-        children: [...home],
-      },
-    ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "*?",
-    element: <Navigate to="/home" />,
-  },
-];
+handleRoutesEachRoute(routes, (route) => {
+  /**
+   * 将自定义的属性写入 handle 属性中，
+   * 让在使用 useMatches 时，能获取到自定义的属性
+   */
+  const cusAttr = pickCusAttrOnRoute(route);
+  route.handle = route.handle ?? {};
+  Object.assign(route.handle, cusAttr);
+});
 
-const router = createBrowserRouter(routes);
+const router = createHashRouter(routes);
 
 export default router;
 
-export const navigate = router.navigate;
+export const { navigate } = router;

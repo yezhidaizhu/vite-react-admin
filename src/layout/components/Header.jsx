@@ -4,14 +4,16 @@ import {
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import {
-  Button,
-  Layout,
-  Dropdown,
-  theme,
   Avatar as AntdAvatar,
+  Button,
   ColorPicker,
+  Dropdown,
+  Layout,
+  theme,
 } from "antd";
+
 import AvatarDefaultImg from "@/assets/avatar.webp";
+import useAuth from "@/hooks/useAuth";
 
 const { Header: AntdHeader } = Layout;
 
@@ -36,7 +38,7 @@ export default function Header({ collapsed, toggleCollapsed }) {
         }}
       />
 
-      <div className="flex items-center pr-4 ">
+      <div className="flex items-center gap-4 pr-4 ">
         <ColorPicker />
         <Avatar />
       </div>
@@ -46,6 +48,7 @@ export default function Header({ collapsed, toggleCollapsed }) {
 
 // 头像
 function Avatar() {
+  const { loginOut } = useAuth();
   const items = [
     // {
     //   type: "divider",
@@ -53,9 +56,10 @@ function Avatar() {
     {
       key: "1",
       label: <div>退出</div>,
+      danger: true,
       icon: <LogoutOutlined />,
       onClick() {
-        console.log("logout");
+        loginOut();
       },
     },
   ];

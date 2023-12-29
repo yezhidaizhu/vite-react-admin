@@ -1,6 +1,6 @@
 import axios from "axios";
 import { stringify } from "qs";
-import { responseOnFulfilled, responseOnRejected } from "./interceptors";
+import { requestOnFulfilled, responseOnFulfilled, responseOnRejected } from "./interceptors";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -12,11 +12,21 @@ const instance = axios.create({
   },
 });
 
-instance.interceptors.request.use(responseOnFulfilled);
+instance.interceptors.request.use(requestOnFulfilled);
 instance.interceptors.response.use(responseOnFulfilled, responseOnRejected);
 
 
-export default function api() {
-  // instance.get
-  // config 传递
+const req = (url = "", method = "GET", config = {}) => {
+  return instance(url, {
+    method,
+    ...config,
+  })
 }
+
+export const api = {
+  get: (url = "", data, config = {}) => req(url, "GET", { params: data, ...config }),
+  post: (url = "", data, config = {}) => req(url, "POST", { data, ...config }),
+  del: (url = "", data, config = {}) => req(url, "DELETE", { data, ...config }),
+  put: (url = "", data, config = {}) => req(url, "PUT", { data, ...config }),
+}
+

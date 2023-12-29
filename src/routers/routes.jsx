@@ -31,6 +31,7 @@ const routes = [
   },
   {
     path: "/login",
+    title: "登录",
     element: <Login />,
   },
   {

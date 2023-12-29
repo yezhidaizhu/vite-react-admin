@@ -1,12 +1,18 @@
+import Config from "@/config";
 import { navigate } from "@/routers";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import { Form } from "antd";
+import { useEffect } from "react";
 
-export default () => {
+export default function Index() {
   const onLogin = () => {
     navigate("/home");
   };
+
+  useEffect(() => {
+    document.title = Config.title + ` - 登录`;
+  }, []);
 
   return (
     <Form className=" w-[400px] m-auto pt-[20vh]">
@@ -28,4 +34,4 @@ export default () => {
       </Button>
     </Form>
   );
-};
+}

@@ -3,10 +3,8 @@ import { navigate } from "@/routers";
 import { api } from "@/utils/request";
 import { notification } from "antd";
 import { Dropdown } from "antd";
-import { message } from "antd";
 import { Divider } from "antd";
 import { Button } from "antd";
-import { useEffect } from "react";
 
 export default function Index() {
   const bts = [
@@ -16,7 +14,7 @@ export default function Index() {
     },
     {
       children: "前往详情",
-      onClick: () => navigate("/demo/detail"),
+      onClick: () => navigate("/demo/detail/123"),
     },
   ];
 

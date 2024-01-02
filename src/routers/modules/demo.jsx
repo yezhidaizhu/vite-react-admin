@@ -11,9 +11,9 @@ const demo = [
 
   // 详情
   {
-    path: "/demo/detail",
+    path: "/demo/detail/:id",
     element: load(import("@/pages/demo/detail")),
-    title: "demo",
+    title: "demo详情",
     hideInMenu: true, // 在菜单中隐藏
   },
 

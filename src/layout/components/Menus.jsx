@@ -4,6 +4,7 @@ import { useMatches } from "react-router-dom";
 
 import { useMenus } from "@/hooks/useApp";
 import { navigate } from "@/routers";
+import { splitRoutePath } from "@/utils/routeUtils";
 
 export default function Menus() {
   const { menus } = useMenus({ created: true });
@@ -32,19 +33,5 @@ export default function Menus() {
       items={menus}
       onSelect={onClickItem}
     />
-  );
-}
-
-/**
- * 将 "/a/b/c" 路由拆成 ["/","/a","/a/b","/a/b/c"]
- * @param {*} routePath
- */
-function splitRoutePath(routePath = "") {
-  const pathArr = routePath?.split("/");
-
-  return (
-    pathArr?.map?.((_, index) => {
-      return [...pathArr].splice(0, index + 1).join("/");
-    }) || []
   );
 }

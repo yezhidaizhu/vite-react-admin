@@ -4,9 +4,11 @@ import { useRecoilState } from "recoil";
 
 import { menusRoutes } from "@/routers/routes";
 import { appAtom } from "@/stores/app";
-import { filterRoutes, handleRoutesEachRoute } from "@/utils/routeUtils";
+import { filterRoutes, handleRoutesEachRoute, splitRoutePath } from "@/utils/routeUtils";
 
 import useAuth from "./useAuth";
+import { matchPath } from "react-router-dom";
+import { useMatches } from "react-router-dom";
 
 export default function useApp() {
   const appState = useRecoilValue(appAtom);
@@ -54,7 +56,7 @@ export function useMenus({ created = false } = {}) {
         ...menu,
         key: menu?.path,
         label: menu?.title,
-        children: menu?.children?.length ? menu?.children : undefined,
+        children: menu?.children?.length ? [...(menu?.children || [])] : undefined,
       };
     });
 
@@ -66,10 +68,34 @@ export function useMenus({ created = false } = {}) {
 
 
 /**
- * 面包屑 TODO
+ * 面包屑
  */
-export function useBreadCrumb() {
+export function useBreadCrumb({ created = false } = {}) {
   const [appState, setAppState] = useRecoilState(appAtom);
+
+  const matches = useMatches();
+
+  // 根据当前路由，自动判断面包屑路劲
+  useEffect(() => {
+    if (!created) return;
+
+    const paths = splitRoutePath(matches[matches?.length - 1]?.pathname);
+    const breadCrumbs = [];
+
+    handleRoutesEachRoute(menusRoutes, (route) => {
+      const pattern = route?.path;
+      paths?.map((pathName) => {
+        if (!matchPath(pattern, pathName)) return;
+        breadCrumbs.push({
+          title: route?.title,
+          pathName,
+          pattern
+        })
+      })
+    });
+
+    setAppState(v => ({ ...v, breadCrumbs }));
+  }, [matches, setAppState, created])
 
   // 面包屑生成 
   return { breadCrumbs: appState.breadCrumbs };

@@ -77,3 +77,17 @@ export function pickCusAttrOnRoute(routeObj) {
 
   return cusAttr;
 }
+
+/**
+ * 将 "/a/b/c" 路由拆成 ["/","/a","/a/b","/a/b/c"]
+ * @param {*} routePath
+ */
+export function splitRoutePath(routePath = "", splitter = "/") {
+  const pathArr = routePath?.split(splitter);
+
+  return (
+    pathArr?.map?.((_, index) => {
+      return [...pathArr].splice(0, index + 1).join("/");
+    }) || []
+  );
+}

@@ -14,6 +14,7 @@ import {
 
 import AvatarDefaultImg from "@/assets/avatar.webp";
 import useAuth from "@/hooks/useAuth";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const { Header: AntdHeader } = Layout;
 
@@ -49,6 +50,8 @@ export default function Header({ collapsed, toggleCollapsed }) {
 // 头像
 function Avatar() {
   const { loginOut } = useAuth();
+  const { user } = useAuth0();
+
   const items = [
     // {
     //   type: "divider",
@@ -67,8 +70,8 @@ function Avatar() {
   return (
     <Dropdown menu={{ items }}>
       <Button type="text" className=" h-auto flex items-center gap-2">
-        <AntdAvatar src={AvatarDefaultImg} />
-        子非鱼
+        <AntdAvatar src={user?.profile || user?.picture || AvatarDefaultImg} />
+        {user?.nickname}
       </Button>
     </Dropdown>
   );

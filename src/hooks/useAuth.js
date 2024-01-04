@@ -2,6 +2,7 @@ import { navigate } from "@/routers";
 import { permissionsAtom } from "@/stores/app";
 import { useCallback } from "react";
 import { useRecoilState } from "recoil";
+import { useAuth0 } from "@auth0/auth0-react";
 
 /**
  *  登录/权限验证
@@ -15,9 +16,11 @@ export default function useAuth() {
   }, [permissions])
 
 
+  const { logout } = useAuth0();
   // 退出登录
   const loginOut = useCallback(async () => {
-    navigate("/login", { replace: true });
+    logout();
+    // navigate("/login", { replace: true });
   }, []);
 
   return { loginOut, hasPermissions, permissions, setPermissions };

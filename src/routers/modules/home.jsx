@@ -1,12 +1,18 @@
 import { load } from "@/utils/routeUtils";
-import { ExperimentOutlined, HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 
 const home = [
   {
     path: "/home",
-    element: load(import("@/pages/Home")),
     title: "首页",
     icon: <HomeOutlined />,
+    children: [
+      {
+        path: "/home/curd",
+        title: "CURD",
+        element: load(import("@/pages/Home")),
+      },
+    ]
   },
 ];
 

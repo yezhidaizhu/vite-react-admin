@@ -9,11 +9,18 @@ import { Input } from "antd";
 import Card from "antd/lib/card/Card";
 import copy from "copy-to-clipboard";
 import { useCallback } from "react";
+import ModalBatch from "./components/ModalBatch";
+import useDisclose from "@/hooks/useDisclose";
+import { Modal } from "antd/lib";
+import { Switch } from "antd";
 
 const { Item, useForm, useWatch } = Form;
 
+const defaultValue = "xxx";
+
 export default function Index() {
   const [form] = useForm();
+  const batchDisclose = useDisclose()
 
   const getFieldsArr = useCallback(() => {
     const fields = form.getFieldValue("fields");
@@ -49,16 +56,33 @@ export default function Index() {
     // 其它字段
     const fieldArr = getFieldsArr();
     const otherAttr = {};
-    fieldArr?.map(({ field, value }) => Object.assign(otherAttr, { [field]: value || "xxx" }));
+    fieldArr?.map(({ field, value }) => Object.assign(otherAttr, { [field]: value || defaultValue }));
 
     const fieldName = fdata.field;
-    const copyData = labels?.map((str) => {
+    let copyData = labels?.map((str) => {
       return {
         [fieldName]: str,
         ...otherAttr
       }
     });
 
+    // 随机值
+    if (fdata?.isRandValue) {
+      copyData = copyData?.map((item) => {
+        const newItem = { ...item };
+        for (const key in item) {
+          if (Object.hasOwnProperty.call(item, key)) {
+            const value = item[key];
+            if (key !== fieldName && value === defaultValue) {
+              newItem[key] = uuid(4);
+            }
+          }
+        }
+        return newItem;
+      })
+    }
+
+    copyData = copyData?.filter(d => !!d.label)
     const copyText = JSON.stringify(copyData, null, 2);
     console.log(copyText);
     copy(copyText);
@@ -66,6 +90,11 @@ export default function Index() {
   };
 
   const fieldWatchValue = useWatch("field", form);
+
+  // 设置 fields
+  const setFormFields = (content) => {
+    form.setFieldsValue({ content })
+  }
 
   return (
     <Page>
@@ -81,12 +110,16 @@ export default function Index() {
             </Item>
 
             <div className="flex justify-end gap-2 pt-2">
-              <Item name={"randomLen"} initialValue={4} noStyle><InputNumber min={1} /></Item>
-              <Button type="dashed" icon={<RedoOutlined />} onClick={onRandomLen} />
+              <Item name={"randomLen"} initialValue={4} noStyle><InputNumber size="small" min={1} /></Item>
+              <Button size="small" type="dashed" icon={<RedoOutlined />} onClick={onRandomLen} />
+              <Button size="small" onClick={batchDisclose.onOpen}>批量处理</Button>
             </div>
           </Item>
 
           <Item label="其它字段">
+            <Item name="isRandValue" valuePropName="checked" style={{ marginBottom: 4 }}>
+              <Switch checkedChildren="随机值" unCheckedChildren={`固定值${defaultValue}`} />
+            </Item>
             <Item name="fields" style={{ marginBottom: 4 }}>
               <Input.TextArea rows={3} />
             </Item>
@@ -96,6 +129,10 @@ export default function Index() {
           </Item>
         </Form>
       </Card>
+
+      <Modal {...batchDisclose} title="批量处理字符串" width={600} footer={false}>
+        <ModalBatch onOk={setFormFields} disclose={batchDisclose} />
+      </Modal>
     </Page>
   );
 }

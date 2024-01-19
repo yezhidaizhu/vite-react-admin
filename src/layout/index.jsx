@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import Menus from "./components/Menus";
 import Logo from "./components/Logo";
 import { navigate } from "@/routers";
+import { isDev } from "@/utils/helper";
 
 const { Sider, Content } = Layout;
 
@@ -29,14 +30,17 @@ export default function DefaultLayout() {
     document.title = Config.title + (pathTitle ? ` - ${pathTitle}` : ``);
   }, [nav]);
 
-  if (isLoading) {
-    return <SpinLoading />;
+  if (!isDev) {
+    if (isLoading) {
+      return <SpinLoading />;
+    }
+
+    if (!isAuthenticated) {
+      navigate("/login", { replace: true });
+      return;
+    }
   }
 
-  if (!isAuthenticated) {
-    navigate("/login", { replace: true });
-    return;
-  }
 
   return (
     <div className=" h-screen overflow-hidden">
